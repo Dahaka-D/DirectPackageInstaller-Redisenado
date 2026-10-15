@@ -3,6 +3,9 @@ name: Extract ZIP
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   extract:
     runs-on: ubuntu-latest
@@ -10,15 +13,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: List files
+        run: ls -la
+
       - name: Extract ZIP
         run: |
-          unzip -o DPI-Redisenado-para-GitHub.zip
-          rm DPI-Redisenado-para-GitHub.zip
+          # Busca cualquier archivo .zip y lo descomprime
+          ZIPFILE=$(ls *.zip | head -n 1)
+          echo "Extrayendo: $ZIPFILE"
+          unzip -o "$ZIPFILE"
+          rm "$ZIPFILE"
 
       - name: Commit extracted files
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "Extract redesigned source" || echo "No changes"
-          git push
+          git status
+          git commit -m "Extract redesigned source" || echo "No changes to commit"
+          git push 
