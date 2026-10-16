@@ -16,7 +16,9 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Install Android workload
-        run: dotnet workload install android
+        run: |
+          dotnet workload install android
+          dotnet workload update
 
       - name: Setup Java 17
         uses: actions/setup-java@v4
@@ -29,14 +31,22 @@ jobs:
         with:
           packages: 'platform-tools platforms;android-34 build-tools;34.0.0'
 
+      - name: Force TargetFramework
+        working-directory: DirectPackageInstaller
+        run: |
+          # Forzar el TargetFramework en el csproj
+          sed -i 's|<TargetFramework>net8.0-android</TargetFramework>|<TargetFramework>net8.0-android34.0</TargetFramework>|g' DirectPackageInstaller/DirectPackageInstaller.Android/DirectPackageInstaller.Android.csproj
+          cat DirectPackageInstaller/DirectPackageInstaller.Android/DirectPackageInstaller.Android.csproj | head -30
+
       - name: Build Android APK
         working-directory: DirectPackageInstaller
         run: |
           dotnet publish DirectPackageInstaller/DirectPackageInstaller.Android/DirectPackageInstaller.Android.csproj \
             -c Release \
-            -f net8.0-android \
+            -f net8.0-android34.0 \
             -p:AndroidPackageFormats=apk \
-            -o ./publish
+            -o ./publish \
+            --verbosity detailed
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
