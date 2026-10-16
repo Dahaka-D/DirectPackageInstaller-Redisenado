@@ -41,7 +41,7 @@
 		<PackageReference Include="Avalonia.Controls.DataGrid" Version="11.3.8" />
 		<PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.8" />
 		<PackageReference Include="Avalonia.Native" Version="11.3.8" />
-		<PackageReference Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.14" />
+		<PackageReference Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.1" />
 	</ItemGroup>
 
 	<ItemGroup>
