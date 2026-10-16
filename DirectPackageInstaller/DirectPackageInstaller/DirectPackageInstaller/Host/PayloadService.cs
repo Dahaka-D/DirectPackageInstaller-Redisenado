@@ -1,4 +1,4 @@
-﻿using DirectPackageInstaller.Views;
+using DirectPackageInstaller.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
