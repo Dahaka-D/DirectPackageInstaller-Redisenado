@@ -12,9 +12,9 @@ namespace DirectPackageInstaller.Views;
 public partial class MessageBoxView : UserControl
 { 
     const string OK = "Ok"; 
-    const string Yes = "Yes"; 
+    const string Yes = "Sí"; 
     const string No = "No"; 
-    const string Cancel = "Cancel"; 
+    const string Cancel = "Cancelar"; 
     const string Retry = "Retry"; 
     const string Ignore = "Ignore";
     const string Abort = "Abort";
