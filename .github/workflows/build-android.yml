@@ -10,7 +10,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup .NET 8
+      - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.0.x'
@@ -31,22 +31,22 @@ jobs:
         with:
           packages: 'platform-tools platforms;android-34 build-tools;34.0.0'
 
-      - name: Force TargetFramework
+      - name: Force TargetFramework to net9.0-android34.0
         working-directory: DirectPackageInstaller
         run: |
-          # Forzar el TargetFramework en el csproj
-          sed -i 's|<TargetFramework>net8.0-android</TargetFramework>|<TargetFramework>net8.0-android34.0</TargetFramework>|g' DirectPackageInstaller/DirectPackageInstaller.Android/DirectPackageInstaller.Android.csproj
-          cat DirectPackageInstaller/DirectPackageInstaller.Android/DirectPackageInstaller.Android.csproj | head -30
+          sed -i 's|<TargetFramework>.*</TargetFramework>|<TargetFramework>net9.0-android34.0</TargetFramework>|g' DirectPackageInstaller/DirectPackageInstaller.Android/DirectPackageInstaller.Android.csproj
+          echo "=== csproj after change ==="
+          head -20 DirectPackageInstaller/DirectPackageInstaller.Android/DirectPackageInstaller.Android.csproj
 
       - name: Build Android APK
         working-directory: DirectPackageInstaller
         run: |
           dotnet publish DirectPackageInstaller/DirectPackageInstaller.Android/DirectPackageInstaller.Android.csproj \
             -c Release \
-            -f net9.0-android34.0
+            -f net9.0-android34.0 \
             -p:AndroidPackageFormats=apk \
             -o ./publish \
-            --verbosity detailed
+            --verbosity normal
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
