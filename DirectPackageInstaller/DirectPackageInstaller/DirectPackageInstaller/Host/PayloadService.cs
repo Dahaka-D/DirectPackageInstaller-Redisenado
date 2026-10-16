@@ -347,8 +347,8 @@ namespace DirectPackageInstaller.Host
                 ushort LocalPort = (ushort)((IPEndPoint)ServiceSocket.LocalEndPoint).Port;
 
                 var IP = IPAddress.Parse(PCIP).GetAddressBytes();
-                var Port = BitConverter.GetBytes(LocalPort).Reverse().ToArray();
-
+                var Port = BitConverter.GetBytes(LocalPort);
+Array.Reverse(Port);
                 IP.CopyTo(Payload, Offset);
                 Port.CopyTo(Payload, Offset + 4);
 
