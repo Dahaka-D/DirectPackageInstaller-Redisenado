@@ -179,15 +179,15 @@ namespace DirectPackageInstaller.Views
                     RealDebridApiKey = null
                 };
 
-                var DHCPHint = "With DirectPackageInstaller your PS4/PS5 and PC can do a \"Plug And Play\" network connection just enable the DHCP Server option and select your network adapter if needed.";
-                var ProxyHint = "If your download speed is very slow, you can try enable the \"Proxy Downloads\" feature, since this feature has been created just to optimize the download speed.";
-                var CompressedHint = "When downloading directly from compressed files, you can't resume the download after the DirectPackageInstaller is closed, but before close the DirectPackageInstaller you still can pause and resume the download in your PS4.";
-                var AndroidHints = "Is recommended to keep your phone in charger to prevent any battery optimization problems.\nIf you're using MIUI, disable the battery optimizations manually in the app properties.";
-                var FirewallHint = $"The DirectPackageInstaller use the port {Installer.ServerPort} in the \"Proxy Downloads\" feature, maybe you will need to open the ports in your firewall.";
-                var ResumeHint = "Direct PKG urls, using the \"Proxy Download\" feature or not, can be resumed anytime by just selecting 'resume' in your PS4/PS5 download list.";
-                var IndirectDownloadHint = "When using the \"Proxy Downloads\" feature, the PS4/PS5 can't download the game alone and the DirectPackageInstaller must keep open.";
-                var DirectDownloadHint = "When using the direct download mode, you can turn off the computer or close the DirectPakcageInstaller and your PS4/PS5 will continue the download alone.";
-                var WelcomeText = $"Welcome. User, The focus of this tool is download PKGs from direct links but we have others minor features as well.\n\nGood to know:\n{DirectDownloadHint}\n\n{IndirectDownloadHint}\n\n{ResumeHint}\n\n{(App.IsAndroid ? AndroidHints : FirewallHint)}\n\n{CompressedHint}\n\n{ProxyHint}\n\n{(App.IsWindows? DHCPHint  + "\n\n": "")}Created by marcussacana";
+                var DHCPHint = "Con DirectPackageInstaller tu PS4/PS5 y tu PC pueden conectarse en red tipo \"Plug and Play\": solo activa la opción Servidor DHCP y selecciona tu adaptador de red si hace falta.";
+                var ProxyHint = "Si tu velocidad de descarga es muy lenta, prueba activar \"Descargas por proxy\", ya que esa función se creó para optimizar la velocidad.";
+                var CompressedHint = "Al descargar directamente desde archivos comprimidos, no podrás reanudar la descarga después de cerrar DirectPackageInstaller, pero antes de cerrarlo sí puedes pausar y reanudar la descarga en tu PS4.";
+                var AndroidHints = "Se recomienda mantener el teléfono cargando para evitar problemas de optimización de batería.\nSi usas MIUI, desactiva las optimizaciones de batería manualmente en las propiedades de la app.";
+                var FirewallHint = $"DirectPackageInstaller usa el puerto {Installer.ServerPort} en la función \"Descargas por proxy\"; quizás debas abrir los puertos en tu firewall.";
+                var ResumeHint = "Las URLs directas de PKG, con o sin \"Descargas por proxy\", se pueden reanudar en cualquier momento seleccionando 'reanudar' en la lista de descargas de tu PS4/PS5.";
+                var IndirectDownloadHint = "Al usar \"Descargas por proxy\", la PS4/PS5 no puede descargar el juego sola y DirectPackageInstaller debe permanecer abierto.";
+                var DirectDownloadHint = "Con el modo de descarga directa, puedes apagar la computadora o cerrar DirectPackageInstaller y tu PS4/PS5 continuará la descarga sola.";
+                var WelcomeText = $"Bienvenido. El objetivo de esta herramienta es descargar PKGs desde enlaces directos, aunque tiene otras funciones menores.\n\nConviene saber:\n{DirectDownloadHint}\n\n{IndirectDownloadHint}\n\n{ResumeHint}\n\n{(App.IsAndroid ? AndroidHints : FirewallHint)}\n\n{CompressedHint}\n\n{ProxyHint}\n\n{(App.IsWindows? DHCPHint  + "\n\n": "")}Creado por marcussacana";
                 
                 await MessageBox.ShowAsync(WelcomeText, "DirectPackageInstaller", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -228,7 +228,7 @@ namespace DirectPackageInstaller.Views
                  {
                      App.Callback(async () =>
                      {
-                         await MessageBox.ShowAsync("Failed to start the CNL Server\nMaybe another process is already listening?", "DirectPackageInstaller", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                         await MessageBox.ShowAsync("No se pudo iniciar el servidor CNL\n¿Quizás otro proceso ya está escuchando?", "DirectPackageInstaller", MessageBoxButtons.OK, MessageBoxIcon.Error);
                      });
                  }
              }
@@ -306,14 +306,14 @@ namespace DirectPackageInstaller.Views
                     if (Model != null)
                         Model!.DHCPService = false;
 
-                    await MessageBox.ShowAsync("Currently, the DHCP Server is not supported in the current platform", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    await MessageBox.ShowAsync("Por ahora, el servidor DHCP no es compatible con esta plataforma", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
             }
 
             if (DefaultAdapter == null) {
 
-                await SetStatus("Analyzing Network Adapters...");
+                await SetStatus("Analizando adaptadores de red...");
 
                 var Adapters = await AdapterHelper.GetValidAdapters();
 
@@ -355,7 +355,7 @@ namespace DirectPackageInstaller.Views
                 if (Model != null)
                     Model!.DHCPService = false;
 
-                await MessageBox.ShowAsync("Failed to find the ethernet network adapter.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                await MessageBox.ShowAsync("No se encontró el adaptador de red ethernet.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -364,13 +364,13 @@ namespace DirectPackageInstaller.Views
                 DHCP = new DHCPHost();
                 DHCP.OnNewClient += OnClientFound();
                 DHCP.OnNewClient += async (a, b, c) => {
-                    await SetStatus($"Device Connected, IP: {a}");
+                    await SetStatus($"Dispositivo conectado, IP: {a}");
                 };
             }
 
             App.Config.EthernetAdapter = AdapterHelper.Adapter;
 
-            await SetStatus("Initializing DHCP...");
+            await SetStatus("Iniciando DHCP...");
 
             if (!await App.SetupStaticNetwork())
             {
@@ -379,7 +379,7 @@ namespace DirectPackageInstaller.Views
 
                 await SetStatus("");
 
-                await MessageBox.ShowAsync("Failed to setup the network adapter.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                await MessageBox.ShowAsync("No se pudo configurar el adaptador de red.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -427,7 +427,7 @@ namespace DirectPackageInstaller.Views
             {
                 if (DHCP != null)
                 {
-                    await SetStatus("Restoring Network Settings...");
+                    await SetStatus("Restaurando configuración de red...");
 
                     DHCP.Stop();
                     await App.SetupDHCPNetwork();
@@ -567,7 +567,7 @@ namespace DirectPackageInstaller.Views
             InputType = Source.NONE;
 
             if (!SourcePackage.IsValidURL() && !File.Exists(SourcePackage)) {
-                await MessageBox.ShowAsync(Parent, "Invalid URL or File Path", "DirectPackageInstaller", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                await MessageBox.ShowAsync(Parent, "URL o ruta de archivo no válida", "DirectPackageInstaller", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -646,12 +646,12 @@ namespace DirectPackageInstaller.Views
                 {
                     case CompressionFormat.RAR:
                         InputType |= Source.RAR;
-                        await SetStatus(LimitedFHost ? "Downloading... (It may take a while)" : "Decompressing...");
+                        await SetStatus(LimitedFHost ? "Descargando... (puede tardar un poco)" : "Descomprimiendo...");
                         DataInfo = await Decompressor.UnrarPKG(PKGStream, SourcePackage, async (s) => await SetStatus(s),ForcedSource);
                         break;
                     case CompressionFormat.SevenZip:
                         InputType |= Source.SevenZip;
-                        await SetStatus(LimitedFHost ? "Downloading... (It may take a while)" : "Decompressing...");
+                        await SetStatus(LimitedFHost ? "Descargando... (puede tardar un poco)" : "Descomprimiendo...");
                         DataInfo = await Decompressor.Un7zPKG(PKGStream, SourcePackage,async (s) => await SetStatus(s), ForcedSource);
                         break;
                 }
@@ -660,7 +660,7 @@ namespace DirectPackageInstaller.Views
                 {
                     if (App.IsAndroid && Model.SegmentedMode)
                     {
-                        await MessageBox.ShowAsync("Download of compressed files in android isn't stable, Segmented Download Will be disabled", "DirectPackageInstaller", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        await MessageBox.ShowAsync("La descarga de archivos comprimidos en Android no es estable, la descarga segmentada se desactivará", "DirectPackageInstaller", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         Model.SegmentedMode = false;
                     }
                     PKGStream = DataInfo?.Buffer ?? throw new Exception();
@@ -670,7 +670,7 @@ namespace DirectPackageInstaller.Views
                     ListEntries(Installer.CurrentFileList = DataInfo?.PKGList ?? throw new AbortException("Failed to list compressed files"));
                 }
 
-                await SetStatus("Reading PKG...");
+                await SetStatus("Leyendo PKG...");
 
                 var Info = Installer.CurrentPKG = PKGStream.GetPKGInfo() ?? throw new AbortException("Failed to read the PKG information");
 
@@ -688,7 +688,7 @@ namespace DirectPackageInstaller.Views
                     Parent.Activate();
                 }
 
-                btnLoad.Content = "Install";
+                btnLoad.Content = "Instalar";
             }
             catch (Exception ex)
             {
@@ -703,14 +703,14 @@ namespace DirectPackageInstaller.Views
                 Model.PKGParams?.Clear();
 
                 InputType = Source.NONE;
-                btnLoad.Content = "Load";
+                btnLoad.Content = "Cargar";
 
                 PackagesMenu.IsVisible = false;
 #if DEBUG
                 throw;
 #endif
 
-                await SetStatus("Failed to Open the PKG");
+                await SetStatus("No se pudo abrir el PKG");
             }
             finally
             {
@@ -723,13 +723,13 @@ namespace DirectPackageInstaller.Views
 
         private async Task<FileHostStream?> LoadUrl(string SourcePackage)
         {
-            await SetStatus("Analyzing Urls...");
+            await SetStatus("Analizando URLs...");
 
             var UrlInfo = await URLAnalyzer.Analyze(SourcePackage, false);
 
             while (!UrlInfo.Ready && !UrlInfo.Failed)
             {
-                await SetStatus($"Analyzing Urls... {UrlInfo.Progress}");
+                await SetStatus($"Analizando URLs... {UrlInfo.Progress}");
                 await Task.Delay(100);
             }
 
@@ -760,7 +760,7 @@ namespace DirectPackageInstaller.Views
                 {
                     if (UrlInfo.Urls.Length == 1)
                     {
-                        await MessageBox.ShowAsync($"The input file has a unsupported format,\nSupported Files: .rar .7z .pkg", "DirectPackageInstaller", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        await MessageBox.ShowAsync($"El archivo tiene un formato no compatible,\nArchivos compatibles: .rar .7z .pkg", "DirectPackageInstaller", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return null;
                     }
 
@@ -853,7 +853,7 @@ namespace DirectPackageInstaller.Views
                         {
                             App.Callback(async () =>
                             {
-                                await MessageBox.ShowAsync("Failed to start the CNL Server\nMaybe another process is already listening?", "DirectPackageInstaller", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                await MessageBox.ShowAsync("No se pudo iniciar el servidor CNL\n¿Quizás otro proceso ya está escuchando?", "DirectPackageInstaller", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             });
                         }
                     }
@@ -919,12 +919,12 @@ namespace DirectPackageInstaller.Views
         {
             if (string.IsNullOrWhiteSpace(App.Config.PSIP) || string.IsNullOrWhiteSpace(App.Config.PCIP))
             {
-                await MessageBox.ShowAsync(Parent, "Failed to detect your playstation IP.\nPlease, Type your PS/PC IP in the options menu", "DirectPackageInstaller", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                await MessageBox.ShowAsync(Parent, "No se pudo detectar la IP de tu PlayStation.\nEscribe la IP de tu PS/PC en el menú de opciones", "DirectPackageInstaller", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
             var OriStatus = Status.Text;
-            btnLoad.Content = "Pushing...";
+            btnLoad.Content = "Enviando...";
             PackagesMenu.IsEnabled = false;
             btnLoad.IsEnabled = false;
             tbURL.IsEnabled = false;
@@ -935,7 +935,7 @@ namespace DirectPackageInstaller.Views
                     {
                         if (!await IPHelper.IsEtaHenOnline(App.Config.PSIP))
                         {
-                            await MessageBox.ShowAsync($"RPI, GoldHEN nor etaHEN Found at {App.Config.PSIP}, Verify if is running.\nYou may need re-enable the payload server.", "DirectPackageInstaller", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            await MessageBox.ShowAsync($"No se encontró RPI, GoldHEN ni etaHEN en {App.Config.PSIP}. Verifica que esté en ejecución.\nQuizás debas reactivar el servidor de payload.", "DirectPackageInstaller", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return false;
                         }
                     }
@@ -953,7 +953,7 @@ namespace DirectPackageInstaller.Views
                 PackagesMenu.IsEnabled = true;
                 btnLoad.IsEnabled = true;
                 tbURL.IsEnabled = true;
-                btnLoad.Content = "Install";
+                btnLoad.Content = "Instalar";
             }
         }
         
@@ -1021,7 +1021,7 @@ namespace DirectPackageInstaller.Views
 
                 if (!await Install(ContentSource, true) && !ErrorIgnored)
                 {
-                    var Reply = await MessageBox.ShowAsync("Continue trying install the others packages?","DirectPackageInstaller", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    var Reply = await MessageBox.ShowAsync("¿Continuar intentando instalar los otros paquetes?","DirectPackageInstaller", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (Reply != DialogResult.Yes){
                         break;
                     }
@@ -1038,7 +1038,7 @@ namespace DirectPackageInstaller.Views
                 }
             }
 
-            await MessageBox.ShowAsync("Packages Sent!", "DirectPackageInstaller", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            await MessageBox.ShowAsync("¡Paquetes enviados!", "DirectPackageInstaller", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private static int PS4IdleSeconds()
@@ -1181,7 +1181,7 @@ namespace DirectPackageInstaller.Views
         {
             InputType = Source.NONE;
 
-            btnLoad.Content = (string.IsNullOrWhiteSpace(Url) && !File.Exists(Url)) ? "Open" : "Load";
+            btnLoad.Content = (string.IsNullOrWhiteSpace(Url) && !File.Exists(Url)) ? "Abrir" : "Cargar";
             
             Installer.CurrentFileList = null;
             LastForcedSource = null;
