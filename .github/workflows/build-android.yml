@@ -13,7 +13,7 @@ jobs:
       - name: Setup .NET 8
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '9.0.x'
 
       - name: Install Android workload
         run: |
@@ -43,7 +43,7 @@ jobs:
         run: |
           dotnet publish DirectPackageInstaller/DirectPackageInstaller.Android/DirectPackageInstaller.Android.csproj \
             -c Release \
-            -f net8.0-android34.0 \
+            -f net9.0-android34.0
             -p:AndroidPackageFormats=apk \
             -o ./publish \
             --verbosity detailed
